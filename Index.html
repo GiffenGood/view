@@ -4,23 +4,92 @@
 <head>
     <meta charset="UTF-8">
     <title>title</title>
-    <script src="node_modules/vue/dist/vue.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <script src="node_modules/vue/dist/vue.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div id="app">
-        {{ message }}
+    <div class="container" id="app">
+        <form novalidate>
+            <div class="form-group">
+                <label>{{ message }}</label>
+                <input class="form-control" v-model="message">
+            </div>
+           
+        </form>
+        <div class="form-group">
+                <button v-bind:disabled="disabled" class="btn btn-default" v-on:click="reverseMessage">Reverse Message</button>
+                <button class="btn btn-default" v-on:click="flip">Toggle Disabled</button>
+            </div>        
+        <div class="form-group">
+            <div>
+                <ol>
+                    <li v-for="todo in todos">
+                        {{ todo.text }}
+                    </li>
+                </ol>
+            </div>
+
+        </div>
+
+        <todo-item v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id">
+        </todo-item>
     </div>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
 </body>
 
 </html>
 
 <script>
+    Vue.component('todo-item', {
+        props: ['todo'],
+        template: '<li>{{ todo.text }}</li>'
+    })
+
     var app = new Vue({
         el: '#app',
         data: {
-            message: 'Hello Vue!'
+            message: 'Hello Vue!',
+            seen: true,
+            todos: [
+                { text: 'Learn JavaScript' },
+                { text: 'Learn Vue' },
+                { text: 'Build something awesome' }
+            ],
+            groceryList: [
+                { id: 0, text: 'Vegetables' },
+                { id: 1, text: 'Cheese' },
+                { id: 2, text: 'Whatever else humans are supposed to eat' }
+            ],
+            disabled: false
+        },
+        created: function () {
+            console.log(this.message);
+        },
+        methods: {
+            reverseMessage: function () {
+                this.message = this.message.split('').reverse().join('')
+            },
+            flip: function (e) {
+                console.log('fliping');
+                this.disabled = !this.disabled;
+            }
         }
-    })
+    });
+
+    app.$watch("message", function (data) {
+        console.log("change", data);
+    });
+
 </script>
