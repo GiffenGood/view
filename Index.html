@@ -25,7 +25,7 @@
            
         </form>
         <div class="form-group">
-                <button v-bind:disabled="disabled" class="btn btn-default" v-on:click="reverseMessage">Reverse Message</button>
+                <button v-on:mouseover="doHover" v-bind:disabled="disabled" class="btn btn-default" v-on:click="reverseMessage">Reverse Message</button>
                 <button class="btn btn-default" v-on:click="flip">Toggle Disabled</button>
             </div>        
         <div class="form-group">
@@ -84,6 +84,9 @@
             flip: function (e) {
                 console.log('fliping');
                 this.disabled = !this.disabled;
+            },
+            doHover : function(){
+                console.log("hover");
             }
         }
     });
