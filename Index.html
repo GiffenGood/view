@@ -20,13 +20,19 @@
         <form novalidate>
             <div class="form-group">
                 <label>{{ message }}</label>
-                <input class="form-control" v-model="message">
+                <input class="form-control" v-model.trim="message">
+                
             </div>
-           
+            <label>
+                Beer <input  type="checkbox" v-model="answers" value="beer"/> 
+                Rice <input  type="checkbox" v-model="answers" value="rice"/> 
+                Cheese <input  type="checkbox" v-model="answers" value="cheese"/> 
+            </label>
+            {{answers}}
         </form>
         <div class="form-group">
                 <button v-on:mouseover="doHover" v-bind:disabled="disabled" class="btn btn-default" v-on:click="reverseMessage">Reverse Message</button>
-                <button class="btn btn-default" v-on:click="flip">Toggle Disabled</button>
+                <button class="btn btn-default" v-on:click="flip('i am flipping arg', $event)">Toggle Disabled</button>
             </div>        
         <div class="form-group">
             <div>
@@ -41,6 +47,10 @@
 
         <todo-item v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id">
         </todo-item>
+
+        <div v-on:click="test('div')">
+            <button class="btn btn-default" v-on:click="test('button')">Click Me!</button>
+        </div>
     </div>
 
     <!-- Latest compiled and minified JavaScript -->
@@ -62,6 +72,7 @@
         data: {
             message: 'Hello Vue!',
             seen: true,
+            answers: [],
             todos: [
                 { text: 'Learn JavaScript' },
                 { text: 'Learn Vue' },
@@ -74,15 +85,25 @@
             ],
             disabled: false
         },
+        creating: function(){
+            console.log('creating!!!');
+        },
         created: function () {
             console.log(this.message);
         },
         methods: {
+            test : function(name){
+                console.log('clicked', name);
+            },
             reverseMessage: function () {
                 this.message = this.message.split('').reverse().join('')
+                setTimeout(this.sayHi,2000);
             },
-            flip: function (e) {
-                console.log('fliping');
+            sayHi: function(){
+                console.log('hi dawg!');
+            },
+            flip: function (message, e) {
+                console.log('fliping:', message,e);
                 this.disabled = !this.disabled;
             },
             doHover : function(){
